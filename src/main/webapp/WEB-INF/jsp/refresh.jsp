@@ -4,9 +4,12 @@
     <head>
         <title>Skaičiaus atnaujinimas</title>
         <jsp:include page="header.jsp"/>
+        <style>
+            form{margin-left: 20px}
+        </style>
     </head>
     <body>
-        <form: form name="number" action="/refreshNumber" method="post">
+        <form:form name="number" action="/refreshNumber" method="post">
                 <!-- id būtina pateikti formoje, kitaip į back-end nueis null. Todėl darome hidden, kad neredaguotų -->
                  <input type="hidden" name="id" value="${number.id}"><p>
                  Pirmas skaičius:<br>
