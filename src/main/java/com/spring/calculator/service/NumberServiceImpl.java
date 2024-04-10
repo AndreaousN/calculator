@@ -4,18 +4,13 @@ import com.spring.calculator.model.Number;
 import com.spring.calculator.model.NumberDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// @Service - servisų sluoksnis biznio logikai
-// Po serviso sluoksniu kreipiames į DAO
-@Service
-public class NumberServiceImpl implements NumberService {
+public class NumberServiceImpl implements NumberService{
     @Autowired
     @Qualifier("NumberDAO")
-    private NumberDAO numberDAO;
-
+    public NumberDAO numberDAO;
     @Override
     public List<Number> getAll() {
         return numberDAO.findEntities();

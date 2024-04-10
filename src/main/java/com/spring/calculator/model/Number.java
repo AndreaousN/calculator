@@ -21,14 +21,6 @@ public class Number {
     @Column(name = "result")
     private int result;
 
-    public Number(int num1, int num2, String operation, int result) {
-        this.num1 = num1;
-        this.num2 = num2;
-        this.operation = operation;
-        this.result = result;
-    }
-    public Number() {}
-
     public Number(int id, int num1, int num2, String operation, int result) {
         this.id = id;
         this.num1 = num1;
@@ -37,8 +29,20 @@ public class Number {
         this.result = result;
     }
 
+    public Number(int num1, int num2, String operation, int result) {
+        this.num1 = num1;
+        this.num2 = num2;
+        this.operation = operation;
+        this.result = result;
+    }
+    public Number() {}
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getNum1() {

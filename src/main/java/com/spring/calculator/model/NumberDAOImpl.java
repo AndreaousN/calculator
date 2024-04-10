@@ -6,10 +6,9 @@ import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 
-public class NumberDAOImpl implements NumberDAO {
+public class NumberDAOImpl implements NumberDAO{
+    @Override
     public void insertEntity(Number number) {
-        // EntityManager suteikia metodus objektams kurti, skaityti, trynti ir atnaujinti, bei leidžia pateikti užklausas duomenų bazėms.
-        // EntityManager nėra apsaugota nuo gijų, tai reiškia, kad kiekviena gija turi naudoti savo „EntityManager“ instanciją.
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction entityTransaction = entityManager.getTransaction();
         entityTransaction.begin();
@@ -20,38 +19,42 @@ public class NumberDAOImpl implements NumberDAO {
         entityManager.close();
     }
 
+    @Override
     public Number findEntityById(int id) {
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
-        entityManager.getTransaction().begin();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
 
-        List<Number> numbers = entityManager.
+        List list = entityManager.
                 createQuery("SELECT n FROM Number n WHERE n.id = :id")
                 .setParameter("id", id)
                 .getResultList();
 
         entityManager.getTransaction().commit();
         entityManager.close();
-
-        return numbers.get(0);
+        return (Number) list.get(0);
     }
 
+    @Override
     public List<Number> findEntities() {
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
-        entityManager.getTransaction().begin();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
 
-        List<Number> numbers = entityManager.
+        List list = entityManager.
                 createQuery("SELECT n FROM Number n")
                 .getResultList();
 
         entityManager.getTransaction().commit();
         entityManager.close();
-
-        return numbers;
+        return list;
     }
 
+    @Override
     public void updateEntity(Number number) {
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
-        entityManager.getTransaction().begin();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
 
         Number number1 = entityManager.find(Number.class, number.getId());
         number1.setNum1(number.getNum1());
@@ -63,9 +66,11 @@ public class NumberDAOImpl implements NumberDAO {
         entityManager.close();
     }
 
+    @Override
     public void removeEntityById(int id) {
         EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
-        entityManager.getTransaction().begin();
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
 
         Number number = entityManager.find(Number.class, id);
         entityManager.remove(number);

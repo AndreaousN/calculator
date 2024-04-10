@@ -3,6 +3,7 @@
 <html lang="en">
     <head>
         <title>Skaičiuotuvas</title>
+        <jsp:include page="header.jsp"/>
         <style>
             .error{color:red}
         </style>

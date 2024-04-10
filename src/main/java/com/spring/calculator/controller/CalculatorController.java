@@ -21,18 +21,13 @@ import java.util.HashMap;
 //@RestController nergrazina view
 //Kadangi mums reikia grąžinti view pagal Spring MVC, naudojame @Controller
 @Controller
-// @EnableAutoConfiguration - zymi konfiguracijos komponenta viduje leidzia kurti bean per metodus su @Bean anotacija.
+// Zymi konfiguracijos komponenta viduje leidzia kurti bean per metodus su @Bean anotacija.
 // Si klases lygio anotacija nurodo spring karkasui "Atspeti" konfiguracija.
 // Rementis priklausomybemis ( Jar bibliotekomis ) kurios programuotojas itraukia i projekta ( Pom.xml
 // Siuo atveju ji veikia kartu su main metodu.
 @EnableAutoConfiguration
 public class CalculatorController {
-    // @Autowired - naudojamas automatinei priklausomybių injekcijai,
-    // kad panaudoti @Autowired anotaciją, reikia pirmiausiai turėti apsirašius @Bean @Configuration klasėje.
     @Autowired
-    //@Qualifier anotacija kartu su @Autowired patikslina su kuriuo konkrečiai bean susieti priklausomybę.
-    // Jeigu @Configuration klasėje yra daugiau negu vienas Bean, @Qualifier anotacija yra privaloma,
-    // kitu atveju metama klaida.
     @Qualifier("NumberService")
     public NumberService numberService;
 
@@ -47,8 +42,6 @@ public class CalculatorController {
     }
     // kadangi skaiciuotuvo forma naudoja POST metoda, cia irgi nurodome POST.
 //    @RequestMapping(method = RequestMethod.POST, value = "/calculate")
-    // SVARBU: parametras BindingResult turi eiti iskart po anotacijos @Valid
-    // kitu atveju bus "Validation failed for object"
     // trumpesnis POST variantas
     @PostMapping("/calculate")
     // naudotis @RequestParam reikia kai raktai skiriasi nuo frontend ir backend
@@ -81,11 +74,35 @@ public class CalculatorController {
             modelMap.put("operation", operation);
             modelMap.put("result", result);
 
-            // Kreipiames į service, kuris savo ruožtu kreipiasi į DAO ir išsaugo įrašą DB
             numberService.save(new Number(num1, num2, operation, result));
 
-            // prefix + pavadinimas jsp failo + suffix
             return "calculate";
         }
+    }
+    @GetMapping("/numbers")
+    public String getAllNumbers(Model model) {
+        model.addAttribute("numbers", numberService.getAll());
+        return "numbers";
+    }
+    @GetMapping("/view{id}")
+    public String getById(@RequestParam("id") int id, Model model) {
+        model.addAttribute("number", numberService.getById(id));
+        return "number";
+    }
+    @GetMapping("/delete{id}")
+    public String delete(@RequestParam("id") int id, Model model) {
+        numberService.delete(id);
+        model.addAttribute("numbers", numberService.getAll());
+        return "numbers";
+    }
+    @GetMapping("/refresh{id}")
+    public String update(@RequestParam("id") int id, Model model) {
+        model.addAttribute("number", numberService.getById(id));
+        return "refresh";
+    }
+    @PostMapping("/refreshNumber")
+    public String updateNumber(@ModelAttribute("number") Number number) {
+        numberService.update(number);
+        return "redirect:/view?id=" + number.getId();
     }
 }
