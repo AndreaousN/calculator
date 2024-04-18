@@ -11,12 +11,12 @@ public class User {
     private Integer id;
     @Email
     private String email;
-    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){5,32}$",
-            message = "Šį laukelį būtina užpildyti\nPrivaloma įvesti nuo 5 iki 32 simbolių")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{3,32}$",
+            message = "Šį laukelį būtina užpildyti Privaloma įvesti nuo 5 iki 32 simbolių")
     private String password;
     @Transient
-    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){5,32}$",
-            message = "Šį laukelį būtina užpildyti\nPrivaloma įvesti nuo 5 iki 32 simbolių")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{3,32}$",
+            message = "Šį laukelį būtina užpildyti Privaloma įvesti nuo 5 iki 32 simbolių")
     private String confirmPassword;
 
     public User() {
