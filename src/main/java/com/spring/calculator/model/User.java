@@ -1,16 +1,22 @@
 package com.spring.calculator.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Email
     private String email;
+    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){5,32}$",
+            message = "Šį laukelį būtina užpildyti\nPrivaloma įvesti nuo 5 iki 32 simbolių")
     private String password;
     @Transient
+    @Pattern(regexp = "^((?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])){5,32}$",
+            message = "Šį laukelį būtina užpildyti\nPrivaloma įvesti nuo 5 iki 32 simbolių")
     private String confirmPassword;
 
     public User() {
